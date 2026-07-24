@@ -1,0 +1,435 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg: 0 0% 4%;
+    --surface: 0 0% 8%;
+    --text: 0 0% 96%;
+    --muted: 0 0% 53%;
+    --stroke: 0 0% 12%;
+    --accent: 0 0% 96%;
+    /* Silver palette — replaces the former blue accent */
+    --silver-1: #e8e8ea;   /* bright silver */
+    --silver-2: #a8a8b0;   /* mid silver */
+    --silver-3: #6c6c76;   /* dark silver */
+  }
+
+  * {
+    border-color: hsl(var(--stroke));
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: hsl(var(--bg));
+    color: hsl(var(--text));
+    font-family: 'Poppins', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  /* Refined scrollbar — thin, GitHub-style */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--bg));
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--stroke));
+    border-radius: 4px;
+    border: 2px solid hsl(var(--bg));
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(0 0% 20%);
+  }
+
+  /* Developer-tinted selection */
+  ::selection {
+    background: rgba(232, 232, 234, 0.25);
+    color: hsl(var(--text));
+  }
+
+  /* Refined focus ring — subtle accent */
+  :focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 1px hsl(var(--bg)), 0 0 0 2px rgba(232, 232, 234, 0.5);
+  }
+}
+
+/* ---------- Developer aesthetic layer ---------- */
+/* Subtle animated grid + noise background, scanlines — all GPU-cheap,
+   applied once site-wide via a fixed overlay. */
+
+@keyframes dev-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+@keyframes scanline-drift {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+/* Terminal-style blinking cursor */
+.dev-cursor {
+  display: inline-block;
+  width: 0.6ch;
+  height: 1em;
+  margin-left: 0.1em;
+  background: var(--silver-1);
+  vertical-align: text-bottom;
+  animation: dev-blink 1.05s step-end infinite;
+  border-radius: 1px;
+}
+
+/* Subtle dot grid — used as a faint section background */
+.dev-grid {
+  background-image:
+    linear-gradient(to right, hsl(var(--stroke) / 0.5) 1px, transparent 1px),
+    linear-gradient(to bottom, hsl(var(--stroke) / 0.5) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Noise texture overlay — tiny inline SVG, low opacity */
+.dev-noise {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Scanline overlay — barely visible moving line */
+.dev-scanlines {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 2px,
+    rgba(255, 255, 255, 0.012) 3px,
+    transparent 4px
+  );
+}
+
+/* Status dot — pulsing green "available" indicator */
+.dev-status-dot {
+  position: relative;
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #22c55e;
+}
+.dev-status-dot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: #22c55e;
+  animation: dev-blink 2s ease-in-out infinite;
+  opacity: 0.5;
+}
+
+/* Monospace metadata helper */
+.dev-mono {
+  font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+  font-size: 11px;
+  letter-spacing: 0.02em;
+}
+
+/* Syntax-colored tokens used sparingly */
+.dev-syn { color: hsl(var(--muted)); }
+.dev-syn-key { color: var(--silver-1); }
+.dev-syn-str { color: var(--silver-2); }
+
+/* ---------- macOS-inspired glass panels ---------- */
+/* Translucent layered surface with a 1px hairline border and soft shadow.
+   The inset top highlight mimics frosted-glass light refraction. */
+.mac-panel {
+  position: relative;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.015));
+  backdrop-filter: blur(24px) saturate(140%);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.08) inset,
+    0 0 0 0.5px rgba(0, 0, 0, 0.4),
+    0 12px 40px -14px rgba(0, 0, 0, 0.6);
+  transition:
+    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+.mac-panel-hover:hover {
+  border-color: rgba(232, 232, 234, 0.22);
+  box-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.1) inset,
+    0 0 0 0.5px rgba(0, 0, 0, 0.4),
+    0 20px 60px -16px rgba(0, 0, 0, 0.7),
+    0 0 24px -8px rgba(232, 232, 234, 0.08);
+}
+
+/* Lightweight carousel card — same visual style as mac-panel but WITHOUT
+   backdrop-filter (the #1 cause of lag when 10+ cards animate simultaneously).
+   Uses a solid surface gradient instead of blur. */
+.mac-card {
+  position: relative;
+  background: linear-gradient(135deg, rgba(20, 20, 22, 0.9), rgba(12, 12, 14, 0.85));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.06) inset,
+    0 4px 16px -8px rgba(0, 0, 0, 0.5);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  will-change: transform;
+}
+.mac-card:hover {
+  border-color: rgba(232, 232, 234, 0.2);
+  box-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.08) inset,
+    0 8px 24px -8px rgba(0, 0, 0, 0.6);
+}
+
+/* macOS traffic-light dots (red/yellow/green) for the hero code window */
+.mac-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.mac-dots span {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  display: block;
+}
+.mac-dots .r { background: #ff5f57; }
+.mac-dots .y { background: #febc2e; }
+.mac-dots .g { background: #28c840; }
+
+/* Soft aurora glow blobs — place behind sections (performance-optimized) */
+.mac-aurora {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+.mac-aurora::before,
+.mac-aurora::after {
+  content: '';
+  position: absolute;
+  width: 40vw;
+  height: 40vw;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.14;
+  will-change: transform;
+}
+.mac-aurora::before {
+  background: var(--silver-3);
+  top: -15%;
+  left: -10%;
+  animation: aurora-drift 24s ease-in-out infinite alternate;
+}
+.mac-aurora::after {
+  background: var(--silver-2);
+  bottom: -15%;
+  right: -10%;
+  animation: aurora-drift 28s ease-in-out infinite alternate-reverse;
+}
+@keyframes aurora-drift {
+  0%   { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(8%, 6%) scale(1.15); }
+}
+
+/* Gradient section divider — soft, no hard line */
+.mac-divider {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(255, 255, 255, 0.1) 30%,
+    rgba(255, 255, 255, 0.1) 70%,
+    transparent
+  );
+}
+
+/* Tilt card 3D context — perspective set on parent, child transforms */
+.tilt-parent { perspective: 900px; }
+.tilt-card {
+  transform-style: preserve-3d;
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+@layer components {
+  /* Accent gradient — used on logo ring, hover borders, progress bars */
+  .accent-gradient {
+    background: linear-gradient(90deg, var(--silver-1) 0%, var(--silver-2) 100%);
+  }
+
+  /* Gradient hover border ring — wraps a button/card; inner content sits on bg */
+  .gradient-ring {
+    position: relative;
+    isolation: isolate;
+  }
+  .gradient-ring::before {
+    content: '';
+    position: absolute;
+    inset: -1.5px;
+    border-radius: inherit;
+    padding: 1.5px;
+    background: linear-gradient(90deg, var(--silver-1) 0%, var(--silver-2) 100%);
+    background-size: 200% 200%;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.28s cubic-bezier(0.25, 0.1, 0.25, 1);
+    z-index: -1;
+    animation: gradient-shift 6s ease infinite;
+  }
+  .gradient-ring:hover::before {
+    opacity: 1;
+  }
+
+  /* Animated gradient border pill (for hover labels) */
+  .animated-gradient-border {
+    position: relative;
+    background: white;
+    border-radius: 9999px;
+  }
+  .animated-gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: -1.5px;
+    border-radius: 9999px;
+    background: linear-gradient(90deg, var(--silver-1) 0%, var(--silver-2) 100%);
+    background-size: 200% 200%;
+    z-index: -1;
+    animation: gradient-shift 4s ease infinite;
+  }
+
+  /*
+   * UNIFIED BUTTON SYSTEM — Apple HIG inspired.
+   * One design language across primary / secondary / ghost variants.
+   * 8px spacing system. Min 44px touch target. 200–300ms tactile motion.
+   * Base class .btn sets geometry; variants only swap fill/border.
+   */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 44px;
+    padding: 0 20px;
+    border-radius: 9999px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+    border: 1px solid transparent;
+    -webkit-tap-highlight-color: transparent;
+    transition:
+      transform 0.25s cubic-bezier(0.25, 0.1, 0.25, 1),
+      background-color 0.25s cubic-bezier(0.25, 0.1, 0.25, 1),
+      border-color 0.25s cubic-bezier(0.25, 0.1, 0.25, 1),
+      color 0.25s cubic-bezier(0.25, 0.1, 0.25, 1),
+      box-shadow 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+  .btn:active {
+    transform: scale(0.97);
+  }
+  .btn:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px hsl(var(--bg)), 0 0 0 4px rgba(232, 232, 234, 0.6);
+  }
+  /* larger CTAs share geometry, just taller + more padding */
+  .btn-lg {
+    height: 52px;
+    padding: 0 28px;
+    font-size: 15px;
+  }
+
+  /* Primary — solid light fill (the "call to action") */
+  .btn-primary {
+    background: hsl(var(--text));
+    color: hsl(var(--bg));
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  }
+  .btn-primary:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Secondary — glass surface, subtle border (the "supporting" action) */
+  .btn-secondary {
+    background: hsl(var(--surface));
+    color: hsl(var(--text));
+    border-color: hsl(var(--stroke));
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+  }
+  .btn-secondary:hover {
+    transform: scale(1.03);
+    border-color: hsl(var(--stroke) / 0.8);
+    background: hsl(var(--surface) / 0.9);
+  }
+
+  /* Ghost — transparent, just text (footer links, nav) */
+  .btn-ghost {
+    background: transparent;
+    color: hsl(var(--muted));
+    height: 40px;
+    padding: 0 14px;
+    font-size: 13px;
+  }
+  .btn-ghost:hover {
+    color: hsl(var(--text));
+    background: hsl(var(--surface));
+  }
+  .btn-ghost.active {
+    color: hsl(var(--text));
+    background: hsl(var(--stroke) / 0.5);
+  }
+
+  /* Solid accent variant — gradient fill (paid promotion) */
+  .btn-accent {
+    background: linear-gradient(90deg, var(--silver-1) 0%, var(--silver-2) 100%);
+    color: hsl(var(--bg));
+    font-weight: 600;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  }
+  .btn-accent:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 24px -8px rgba(168, 168, 176, 0.5);
+  }
+
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* X/Twitter embed: the dark-theme iframe is pure black (#000).
+     The whole TweetCard is bg-black, so the embed blends with no seam.
+     Center the iframe at its natural width — never stretch it. */
+  .tweet-embed {
+    display: flex;
+    justify-content: center;
+  }
+  .tweet-embed > iframe {
+    display: block;
+  }
+}
