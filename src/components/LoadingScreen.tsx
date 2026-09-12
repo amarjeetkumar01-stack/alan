@@ -22,7 +22,7 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
 
   return (
     <motion.div className="intro font-sans" exit={{ y: '-100%' }} transition={{ duration: reducedMotion ? 0 : 0.75, ease: [0.22, 1, 0.36, 1] }} aria-label="Opening Alan's portfolio">
-      <div className="intro-brand"><img src="/alan-logo.png" alt="" width="48" height="48" /><span>Alan.</span></div>
+      <div className="intro-brand"><img src="/alan-profile.png" alt="" width="48" height="48" /><span>Alan.</span></div>
       <p>Creator. Explorer. Builder. Marketer.</p>
       <div className="intro-progress">
         <div className="intro-track"><div style={{ transform: `scaleX(${count / 100})` }} /></div>
