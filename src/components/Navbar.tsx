@@ -32,7 +32,7 @@ export default function Navbar({ ready, onMenuChange, theme, onThemeToggle, moti
 
   return (
     <>
-      <motion.header className="site-header" initial={{ opacity: 0, y: 12 }} animate={ready ? { opacity: 1, y: 0 } : { opacity: 0 }} transition={{ duration: reduced ? 0 : 0.7, delay: reduced ? 0 : 0.1 }}>
+      <motion.header className="site-header" initial={{ opacity: 0, y: -12 }} animate={ready ? { opacity: 1, y: 0 } : { opacity: 0 }} transition={{ duration: reduced ? 0 : 0.7, delay: reduced ? 0 : 0.1 }}>
         <div className="shell header-inner">
           <a href="#home" className="brand" aria-label="Alan, home"><img src="/alan-profile.png" alt="" width="36" height="36" /><span>Alan.</span></a>
           <nav className="desktop-nav" aria-label="Main navigation">
