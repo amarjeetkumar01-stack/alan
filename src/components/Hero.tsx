@@ -1,15 +1,26 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { useHls } from '../hooks/useHls';
 import { HLS_SRC } from '../data';
 
 const ROLES = ['Creator', 'Explorer', 'Builder', 'Marketer'];
 
-export default function Hero({ ready }: { ready: boolean }) {
+export default function Hero({ ready, animationsEnabled }: { ready: boolean; animationsEnabled: boolean }) {
   const reduced = useReducedMotion();
   const [playing, setPlaying] = useState(!reduced);
   const videoRef = useHls(HLS_SRC, playing && !reduced);
   const [roleIndex, setRoleIndex] = useState(0);
+  const [hovered, setHovered] = useState(false);
+  const [focused, setFocused] = useState(false);
+  const autoRotate = ready && animationsEnabled && !reduced && !hovered && !focused;
+
+  useEffect(() => {
+    if (!autoRotate) return;
+    const timer = window.setInterval(() => {
+      if (!document.hidden) setRoleIndex(i => (i + 1) % ROLES.length);
+    }, 3500);
+    return () => window.clearInterval(timer);
+  }, [autoRotate]);
   const reveal = { duration: reduced ? 0 : 0.9, ease: [0.22, 1, 0.36, 1] as const };
 
   return (
@@ -25,9 +36,9 @@ export default function Hero({ ready }: { ready: boolean }) {
             <div className="hero-actions"><a href="#work" className="pill-button light-button">See works<span className="arrow-badge" aria-hidden="true">↗</span></a><a href="#contact" className="hero-contact">Reach out <span aria-hidden="true">↗</span></a></div>
           </motion.div>
         </div>
-        <motion.aside className="role-card" initial={{ opacity: 0, y: 24 }} animate={ready ? { opacity: 1, y: 0 } : { opacity: 0 }} transition={{ ...reveal, delay: reduced ? 0 : 0.5 }} aria-label="My roles">
+        <motion.aside onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} onFocusCapture={() => setFocused(true)} onBlurCapture={event => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setFocused(false); }} className="role-card" initial={{ opacity: 0, y: 24 }} animate={ready ? { opacity: 1, y: 0 } : { opacity: 0 }} transition={{ ...reveal, delay: reduced ? 0 : 0.5 }} aria-label="My roles">
           <div className="role-top"><span className="eyebrow">One curiosity. Many hats.</span><span className="role-symbol" aria-hidden="true">↗</span></div>
-          <div className="role-body"><img src="/alan-profile.png" width="64" height="64" alt="Alan" /><span>AI & Web3</span><div className="role-title" aria-live="polite"><AnimatePresence mode="wait"><motion.h2 key={roleIndex} initial={{ opacity: 0, y: reduced ? 0 : 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: reduced ? 0 : -12 }} transition={{ duration: reduced ? 0 : 0.2 }}>{ROLES[roleIndex]}.</motion.h2></AnimatePresence></div></div>
+          <div className="role-body"><img src="/alan-profile.png" width="64" height="64" alt="Alan" /><span>AI & Web3</span><div className="role-title" aria-live={autoRotate ? 'off' : 'polite'}><AnimatePresence mode="wait"><motion.h2 key={roleIndex} initial={{ opacity: 0, y: reduced ? 0 : 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: reduced ? 0 : -12 }} transition={{ duration: reduced ? 0 : 0.2 }}>{ROLES[roleIndex]}.</motion.h2></AnimatePresence></div></div>
           <div className="role-bottom"><span className="role-count">{String(roleIndex + 1).padStart(2, '0')}<span> / 04</span></span><div className="role-controls"><button className="round-button" aria-label="Previous role" onClick={() => setRoleIndex(i => (i + ROLES.length - 1) % ROLES.length)}>←</button><button className="round-button" aria-label="Next role" onClick={() => setRoleIndex(i => (i + 1) % ROLES.length)}>→</button></div></div>
         </motion.aside>
       </div>

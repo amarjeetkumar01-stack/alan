@@ -3,7 +3,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 
 const LINKS = ['Home', 'About', 'Work', 'Tools', 'Services', 'Contact'];
 
-export default function Navbar({ ready, onMenuChange }: { ready: boolean; onMenuChange: (open: boolean) => void }) {
+export default function Navbar({ ready, onMenuChange, theme, onThemeToggle, motionPaused, onMotionToggle }: { ready: boolean; onMenuChange: (open: boolean) => void; theme: 'light' | 'dark'; onThemeToggle: () => void; motionPaused: boolean; onMotionToggle: () => void }) {
   const [time, setTime] = useState(new Date());
   const [active, setActive] = useState('Home');
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -39,6 +39,8 @@ export default function Navbar({ ready, onMenuChange }: { ready: boolean; onMenu
             {LINKS.slice(1).map(link => <a key={link} href={`#${link.toLowerCase()}`} aria-current={active.toLowerCase() === link.toLowerCase() ? 'location' : undefined}>{link}</a>)}
           </nav>
           <div className="header-controls">
+            <button className="menu-trigger theme-toggle" onClick={onThemeToggle} aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}><span className="theme-symbol" aria-hidden="true" /><span>{theme === 'dark' ? 'Light' : 'Dark'}</span></button>
+            {!reduced && <button className="menu-trigger motion-toggle" onClick={onMotionToggle} aria-label={motionPaused ? 'Resume card animations' : 'Pause card animations'} aria-pressed={motionPaused}><span className={motionPaused ? 'play-symbol' : 'pause-symbol'} aria-hidden="true" /><span className="sr-only">Card animations</span></button>}
             <div className="clock"><span>Local time</span><time dateTime={time.toISOString()}>{time.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }).toLowerCase()}</time></div>
             <button className="menu-trigger" ref={triggerRef} aria-haspopup="dialog" aria-controls="site-menu" onClick={() => { dialogRef.current?.showModal(); onMenuChange(true); }}><span className="menu-lines" aria-hidden="true"><i /><i /></span>Menu</button>
           </div>

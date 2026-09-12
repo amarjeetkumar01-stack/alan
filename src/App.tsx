@@ -16,6 +16,13 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(!reducedMotion);
   const [ready, setReady] = useState(Boolean(reducedMotion));
   const [menuOpen, setMenuOpen] = useState(false);
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  const [motionPaused, setMotionPaused] = useState(false);
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#0a0a0a' : '#ffffff');
+  }, [theme]);
   const pageRef = useRef<HTMLDivElement>(null);
   const completeIntro = useCallback(() => setIsLoading(false), []);
 
@@ -34,12 +41,12 @@ export default function App() {
       <AnimatePresence onExitComplete={() => setReady(true)}>
         {isLoading && <LoadingScreen onComplete={completeIntro} />}
       </AnimatePresence>
-      <div ref={pageRef} className="font-sans">
+      <div ref={pageRef} className="font-sans" data-motion-paused={motionPaused || !!reducedMotion}>
         <a className="skip-link" href="#main">Skip to content</a>
         <ScrollProgress />
-        <Navbar ready={ready} onMenuChange={setMenuOpen} />
+        <Navbar ready={ready} onMenuChange={setMenuOpen} theme={theme} onThemeToggle={() => setTheme(t => t === 'dark' ? 'light' : 'dark')} motionPaused={motionPaused} onMotionToggle={() => setMotionPaused(p => !p)} />
         <main id="main">
-          <Hero ready={ready} />
+          <Hero ready={ready} animationsEnabled={!motionPaused && !reducedMotion} />
           <About />
           <SelectedWorks />
           <Tools />
