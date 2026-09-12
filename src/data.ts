@@ -4,24 +4,35 @@ export type WorkItem = {
   name: string;
   url: string;
   logo: string;
+  additionalPosts?: string[];
 };
 
 // AI projects
 export const AI_WORK: WorkItem[] = [
-  { name: 'Fanvue', url: 'https://x.com/Alan_Earn/status/2065678107764502539', logo: '/logos/fanvue.png' },
-  { name: 'Z.ai', url: 'https://x.com/Alan_Earn/status/2074374165331882391', logo: '/logos/zai.svg' },
-  { name: 'Atomic Chat', url: 'https://x.com/Alan_Earn/status/2071258839589265432', logo: '/logos/atomicchat.png' },
-  { name: 'TSL', url: 'https://x.com/Alan_Earn/status/2061482181176987686', logo: '/logos/tsl.png' },
-  { name: 'NATIX Network', url: 'https://x.com/Alan_Earn/status/2079794202540683652', logo: '/logos/natix.png' },
+  { name: 'Tavus', url: 'https://x.com/alannnfx/status/2098098690749776186?s=20', logo: '/logos/tavus.png' },
+  {
+    name: 'Sapient Intelligence',
+    url: 'https://x.com/alannnfx/status/2096397114435838090?s=20',
+    logo: '/logos/sapient-intelligence.png',
+    additionalPosts: [
+      'https://x.com/alannnfx/status/2094968399889870905?s=20',
+      'https://x.com/alannnfx/status/2093870768677703770?s=20',
+    ],
+  },
+  { name: 'Fanvue', url: 'https://x.com/alannnfx/status/2065678107764502539', logo: '/logos/fanvue.png' },
+  { name: 'Z.ai', url: 'https://x.com/alannnfx/status/2074374165331882391', logo: '/logos/zai.svg' },
+  { name: 'Atomic Chat', url: 'https://x.com/alannnfx/status/2071258839589265432', logo: '/logos/atomicchat.png' },
+  { name: 'TSL', url: 'https://x.com/alannnfx/status/2061482181176987686', logo: '/logos/tsl.png' },
+  { name: 'NATIX Network', url: 'https://x.com/alannnfx/status/2079794202540683652', logo: '/logos/natix.png' },
 ];
 
 // Crypto projects
 export const CRYPTO_WORK: WorkItem[] = [
-  { name: 'Lastpack', url: 'https://x.com/Alan_Earn/status/2075063803759485428', logo: '/logos/lastpack.png' },
-  { name: 'Rally', url: 'https://x.com/Alan_Earn/status/2027091422391021616', logo: '/logos/rally.png' },
-  { name: 'Argue', url: 'https://x.com/Alan_Earn/status/2022563415504621611', logo: '/logos/argue.png' },
-  { name: 'Syndicate', url: 'https://x.com/Alan_Earn/status/2056245610672746767', logo: '/logos/syndicate.png' },
-  { name: 'Kosmosdotfyi', url: 'https://x.com/Alan_Earn/status/2078354459881861200', logo: '/logos/kosmos.png' },
+  { name: 'Lastpack', url: 'https://x.com/alannnfx/status/2075063803759485428', logo: '/logos/lastpack.png' },
+  { name: 'Rally', url: 'https://x.com/alannnfx/status/2027091422391021616', logo: '/logos/rally.png' },
+  { name: 'Argue', url: 'https://x.com/alannnfx/status/2022563415504621611', logo: '/logos/argue.png' },
+  { name: 'Syndicate', url: 'https://x.com/alannnfx/status/2056245610672746767', logo: '/logos/syndicate.png' },
+  { name: 'Kosmosdotfyi', url: 'https://x.com/alannnfx/status/2078354459881861200', logo: '/logos/kosmos.png' },
 ];
 
 export type XPost = {
@@ -31,10 +42,10 @@ export type XPost = {
 };
 
 export const X_POSTS: XPost[] = [
-  { id: '2061325835047743568', url: 'https://x.com/Alan_Earn/status/2061325835047743568', label: 'AI Research' },
-  { id: '2070180935350579337', url: 'https://x.com/Alan_Earn/status/2070180935350579337', label: 'AI Agents' },
-  { id: '2065011204465324197', url: 'https://x.com/Alan_Earn/status/2065011204465324197', label: 'Automation' },
-  { id: '2062779167217955229', url: 'https://x.com/Alan_Earn/status/2062779167217955229', label: 'Future Tech' },
+  { id: '2061325835047743568', url: 'https://x.com/alannnfx/status/2061325835047743568', label: 'AI Research' },
+  { id: '2070180935350579337', url: 'https://x.com/alannnfx/status/2070180935350579337', label: 'AI Agents' },
+  { id: '2065011204465324197', url: 'https://x.com/alannnfx/status/2065011204465324197', label: 'Automation' },
+  { id: '2062779167217955229', url: 'https://x.com/alannnfx/status/2062779167217955229', label: 'Future Tech' },
 ];
 
 export type Project = {
@@ -91,7 +102,7 @@ export type JournalEntry = {
 export const JOURNAL: JournalEntry[] = [
   {
     title: 'Claude Fable 5 vs GLM 5.2',
-    url: 'https://x.com/Alan_Earn/status/2072569518422200663',
+    url: 'https://x.com/alannnfx/status/2072569518422200663',
     image:
       'https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=200&q=80',
     read: 'Read',
@@ -99,7 +110,7 @@ export const JOURNAL: JournalEntry[] = [
   },
   {
     title: 'How to use 3b model for Free',
-    url: 'https://x.com/Alan_Earn/status/2071258839589265432',
+    url: 'https://x.com/alannnfx/status/2071258839589265432',
     image:
       'https://images.unsplash.com/photo-1620712943543-bcc4688e7480?auto=format&fit=crop&w=200&q=80',
     read: 'Read',
@@ -107,7 +118,7 @@ export const JOURNAL: JournalEntry[] = [
   },
   {
     title: 'My Obsidian and Hermes Combo',
-    url: 'https://x.com/Alan_Earn/status/2070180935350579337',
+    url: 'https://x.com/alannnfx/status/2070180935350579337',
     image:
       'https://images.unsplash.com/photo-1655720828018-edd2daec9349?auto=format&fit=crop&w=200&q=80',
     read: 'Read',
@@ -115,7 +126,7 @@ export const JOURNAL: JournalEntry[] = [
   },
   {
     title: 'Comparison between PT-5.5 vs GLM 5.2 vs Opus 4.8 vs Fugu',
-    url: 'https://x.com/Alan_Earn/status/2070110059858915791',
+    url: 'https://x.com/alannnfx/status/2070110059858915791',
     image:
       'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=200&q=80',
     read: 'Read',

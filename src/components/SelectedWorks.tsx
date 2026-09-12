@@ -14,10 +14,13 @@ export default function SelectedWorks() {
 function WorkCard({ item, category, index }: { item: WorkItem; category: string; index: number }) {
   const reduced = useReducedMotion();
   return (
-    <motion.a href={item.url} target="_blank" rel="noopener noreferrer" aria-label={`See ${item.name} work on X (opens in a new tab)`} className="work-card" initial={{ opacity: reduced ? 1 : 0, y: reduced ? 0 : 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.15 }} transition={{ duration: reduced ? 0 : 0.6, delay: reduced ? 0 : (index % 3) * 0.08 }}>
+    <motion.article className="work-card" initial={{ opacity: reduced ? 1 : 0, y: reduced ? 0 : 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.15 }} transition={{ duration: reduced ? 0 : 0.6, delay: reduced ? 0 : (index % 3) * 0.08 }}>
+      <a className="work-card-main" href={item.url} target="_blank" rel="noopener noreferrer" aria-label={`See ${item.name}${item.additionalPosts?.length ? ' post 1' : ' work'} on X (opens in a new tab)`}>
       <div className="work-card-top"><span>{category}</span><span className="work-arrow" aria-hidden="true">↗</span></div>
       <div className="work-logo"><img src={item.logo} alt="" loading="lazy" width="112" height="112" /></div>
       <div className="work-card-bottom"><h4>{item.name}</h4><span>See work <span aria-hidden="true">↗</span></span></div>
-    </motion.a>
+      </a>
+      {item.additionalPosts?.length ? <nav className="work-post-links" aria-label={`${item.name} posts`}>{[item.url, ...item.additionalPosts].map((url, i) => <a key={url} href={url} target="_blank" rel="noopener noreferrer" aria-label={`${item.name} post ${i + 1} on X (opens in a new tab)`}>Post {i + 1} <span aria-hidden="true">↗</span></a>)}</nav> : null}
+    </motion.article>
   );
 }

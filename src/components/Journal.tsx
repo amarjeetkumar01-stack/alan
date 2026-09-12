@@ -13,7 +13,7 @@ export default function Journal() {
           subtext="Field notes and research, shared in public as I learn them."
           action={
             <a
-              href="https://x.com/Alan_Earn"
+              href="https://x.com/alannnfx"
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn-secondary gradient-ring hidden md:inline-flex"

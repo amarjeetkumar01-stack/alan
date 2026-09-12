@@ -34,7 +34,7 @@ export default function Navbar({ ready, onMenuChange }: { ready: boolean; onMenu
     <>
       <motion.header className="site-header" initial={{ opacity: 0, y: -12 }} animate={ready ? { opacity: 1, y: 0 } : { opacity: 0 }} transition={{ duration: reduced ? 0 : 0.7, delay: reduced ? 0 : 0.1 }}>
         <div className="shell header-inner">
-          <a href="#home" className="brand" aria-label="Alan, home"><img src="/alan-logo.png" alt="" width="36" height="36" /><span>Alan.</span></a>
+          <a href="#home" className="brand" aria-label="Alan, home"><img src="/alan-profile.png" alt="" width="36" height="36" /><span>Alan.</span></a>
           <nav className="desktop-nav" aria-label="Main navigation">
             {LINKS.slice(1).map(link => <a key={link} href={`#${link.toLowerCase()}`} aria-current={active.toLowerCase() === link.toLowerCase() ? 'location' : undefined}>{link}</a>)}
           </nav>
@@ -49,7 +49,7 @@ export default function Navbar({ ready, onMenuChange }: { ready: boolean; onMenu
           <div className="menu-top"><span className="brand">Alan.</span><button className="menu-trigger" onClick={closeMenu} autoFocus>Close <span aria-hidden="true">×</span></button></div>
           <h2 id="menu-title" className="eyebrow">Explore the portfolio</h2>
           <nav className="overlay-links" aria-label="Expanded navigation">{LINKS.map(link => <a key={link} href={`#${link.toLowerCase()}`} onClick={closeMenu}>{link}<span aria-hidden="true">↗</span></a>)}</nav>
-          <div className="menu-bottom"><span>AI Creator & Social Media Marketer</span><a href="https://x.com/Alan_Earn" target="_blank" rel="noopener noreferrer">@Alan_Earn ↗</a></div>
+          <div className="menu-bottom"><span>AI Creator & Social Media Marketer</span><a href="https://x.com/alannnfx" target="_blank" rel="noopener noreferrer">@alannnfx ↗</a></div>
         </div>
       </dialog>
     </>
