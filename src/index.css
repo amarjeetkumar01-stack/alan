@@ -45,7 +45,9 @@
 .skip-link:focus { transform: translateY(0); }
 .scroll-progress { position: fixed; top: 0; left: 0; width: 100%; height: 2px; transform-origin: left; background: var(--accent); z-index: 110; }
 
-.site-header { position: absolute; inset: 0 0 auto; z-index: 40; color: var(--background); }
+.site-header { position: fixed; inset: auto 0 0; z-index: 40; color: var(--background); background: var(--ink); border-top: 1px solid color-mix(in srgb, var(--background) 18%, transparent); padding-bottom: env(safe-area-inset-bottom, 0px); }
+body { padding-bottom: calc(100px + env(safe-area-inset-bottom, 0px)); }
+html { scroll-padding-bottom: calc(116px + env(safe-area-inset-bottom, 0px)); }
 .header-inner { display: flex; justify-content: space-between; align-items: center; padding-block: 1.5rem; }
 .brand { display: inline-flex; align-items: center; gap: 0.65rem; font-size: 28px; letter-spacing: -0.06em; font-weight: 600; }
 .brand img { border-radius: 50%; width: 36px; height: 36px; object-fit: cover; }
