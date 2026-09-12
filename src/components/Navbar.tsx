@@ -1,124 +1,57 @@
-import { useEffect, useState } from 'react';
-import { cn } from '../lib/utils';
+import { useEffect, useRef, useState } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 
-const LINKS = ['Home', 'Work', 'Journal', 'Tools', 'Services'];
+const LINKS = ['Home', 'About', 'Work', 'Tools', 'Services', 'Contact'];
 
-export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
+export default function Navbar({ ready, onMenuChange }: { ready: boolean; onMenuChange: (open: boolean) => void }) {
+  const [time, setTime] = useState(new Date());
   const [active, setActive] = useState('Home');
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const reduced = useReducedMotion();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 100);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    const timer = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(timer);
   }, []);
 
-  // Scroll-spy: highlight active section
   useEffect(() => {
-    const ids = ['home', 'work', 'journal', 'tools', 'services'];
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            const id = e.target.id;
-            const map: Record<string, string> = {
-              home: 'Home',
-              work: 'Work',
-              journal: 'Journal',
-              tools: 'Tools',
-              services: 'Services',
-            };
-            setActive(map[id] ?? 'Home');
-          }
-        });
-      },
-      { rootMargin: '-40% 0px -55% 0px' },
-    );
-    ids.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) setActive(entry.target.id);
+      });
+    }, { rootMargin: '-15% 0px -65% 0px' });
+    LINKS.forEach(link => {
+      const section = document.getElementById(link.toLowerCase());
+      if (section) observer.observe(section);
     });
     return () => observer.disconnect();
   }, []);
 
-  const scrollTo = (href: string) => {
-    const el = document.querySelector(href);
-    el?.scrollIntoView({ behavior: 'smooth' });
-  };
+  const closeMenu = () => dialogRef.current?.close();
 
   return (
-    <nav className="fixed left-0 right-0 top-0 z-50 flex justify-center px-4 pt-4 md:pt-6">
-      <div
-        className={cn(
-          'inline-flex items-center rounded-full border border-white/10 bg-surface px-2 py-2 backdrop-blur-md transition-shadow duration-300',
-          scrolled && 'shadow-md shadow-black/10',
-        )}
-      >
-        {/* Logo — shown as a circular badge with the original background intact */}
-        <a
-          href="#home"
-          onClick={(e) => {
-            e.preventDefault();
-            scrollTo('#home');
-          }}
-          className="group relative mr-1 flex h-9 items-center justify-center"
-        >
-          <span className="block h-8 w-8 overflow-hidden rounded-full ring-1 ring-white/10 transition-transform duration-300 group-hover:scale-110">
-            <img
-              src="/alan-logo.png"
-              alt="Alan"
-              className="h-full w-full object-cover"
-              onError={(e) => {
-                // Fallback to text mark if the logo file isn't present yet
-                (e.currentTarget as HTMLImageElement).style.display = 'none';
-                const fallback = e.currentTarget.nextElementSibling as HTMLElement | null;
-                if (fallback) fallback.style.display = '';
-              }}
-            />
-          </span>
-          <span
-            className="relative hidden text-[13px] font-medium text-text-primary"
-            style={{ display: 'none' }}
-          >
-            Alan
-          </span>
-        </a>
-
-        <span className="mx-1 hidden h-5 w-px bg-stroke md:block" />
-
-        {/* Nav links */}
-        <div className="hidden items-center md:flex">
-          {LINKS.map((link) => (
-            <a
-              key={link}
-              href={`#${link.toLowerCase()}`}
-              onClick={(e) => {
-                e.preventDefault();
-                scrollTo(`#${link.toLowerCase()}`);
-                setActive(link);
-              }}
-              className={cn('btn btn-ghost', active === link && 'active')}
-            >
-              {link}
-            </a>
-          ))}
+    <>
+      <motion.header className="site-header" initial={{ opacity: 0, y: -12 }} animate={ready ? { opacity: 1, y: 0 } : { opacity: 0 }} transition={{ duration: reduced ? 0 : 0.7, delay: reduced ? 0 : 0.1 }}>
+        <div className="shell header-inner">
+          <a href="#home" className="brand" aria-label="Alan, home"><img src="/alan-logo.png" alt="" width="36" height="36" /><span>Alan.</span></a>
+          <nav className="desktop-nav" aria-label="Main navigation">
+            {LINKS.slice(1).map(link => <a key={link} href={`#${link.toLowerCase()}`} aria-current={active.toLowerCase() === link.toLowerCase() ? 'location' : undefined}>{link}</a>)}
+          </nav>
+          <div className="header-controls">
+            <div className="clock"><span>Local time</span><time dateTime={time.toISOString()}>{time.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }).toLowerCase()}</time></div>
+            <button className="menu-trigger" ref={triggerRef} aria-haspopup="dialog" aria-controls="site-menu" onClick={() => { dialogRef.current?.showModal(); onMenuChange(true); }}><span className="menu-lines" aria-hidden="true"><i /><i /></span>Menu</button>
+          </div>
         </div>
-
-        <span className="mx-1 hidden h-5 w-px bg-stroke md:block" />
-
-        {/* Say hi button */}
-        <a
-          href="#contact"
-          onClick={(e) => {
-            e.preventDefault();
-            scrollTo('#contact');
-          }}
-          className="btn btn-secondary gradient-ring ml-1"
-        >
-          <span>Say hi</span>
-          <span aria-hidden>↗</span>
-        </a>
-      </div>
-    </nav>
+      </motion.header>
+      <dialog id="site-menu" ref={dialogRef} className="nav-dialog font-sans" onClose={() => { onMenuChange(false); triggerRef.current?.focus(); }} aria-labelledby="menu-title">
+        <div className="shell menu-shell">
+          <div className="menu-top"><span className="brand">Alan.</span><button className="menu-trigger" onClick={closeMenu} autoFocus>Close <span aria-hidden="true">×</span></button></div>
+          <h2 id="menu-title" className="eyebrow">Explore the portfolio</h2>
+          <nav className="overlay-links" aria-label="Expanded navigation">{LINKS.map(link => <a key={link} href={`#${link.toLowerCase()}`} onClick={closeMenu}>{link}<span aria-hidden="true">↗</span></a>)}</nav>
+          <div className="menu-bottom"><span>AI Creator & Social Media Marketer</span><a href="https://x.com/Alan_Earn" target="_blank" rel="noopener noreferrer">@Alan_Earn ↗</a></div>
+        </div>
+      </dialog>
+    </>
   );
 }

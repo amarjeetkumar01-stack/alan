@@ -1,104 +1,38 @@
-import { useEffect, useRef, useState } from 'react';
-import gsap from 'gsap';
+import { useState } from 'react';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { useHls } from '../hooks/useHls';
 import { HLS_SRC } from '../data';
 
 const ROLES = ['Creator', 'Explorer', 'Builder', 'Marketer'];
 
-export default function Hero() {
-  const videoRef = useHls(HLS_SRC);
-  const heroRef = useRef<HTMLDivElement>(null);
+export default function Hero({ ready }: { ready: boolean }) {
+  const reduced = useReducedMotion();
+  const [playing, setPlaying] = useState(!reduced);
+  const videoRef = useHls(HLS_SRC, playing && !reduced);
   const [roleIndex, setRoleIndex] = useState(0);
-
-  // Cycle roles every 2s
-  useEffect(() => {
-    const id = setInterval(() => setRoleIndex((i) => (i + 1) % ROLES.length), 2000);
-    return () => clearInterval(id);
-  }, []);
-
-  // GSAP entrance timeline
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-      tl.fromTo('.name-reveal', { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 1.2, delay: 0.1 });
-      tl.fromTo(
-        '.blur-in',
-        { opacity: 0, filter: 'blur(10px)', y: 20 },
-        { opacity: 1, filter: 'blur(0px)', y: 0, duration: 1, stagger: 0.1, delay: 0.3 },
-        '-=0.9',
-      );
-    }, heroRef);
-    return () => ctx.revert();
-  }, []);
-
-  const scrollToWork = () => document.querySelector('#work')?.scrollIntoView({ behavior: 'smooth' });
-  const scrollToContact = () => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
+  const reveal = { duration: reduced ? 0 : 0.9, ease: [0.22, 1, 0.36, 1] as const };
 
   return (
-    <section id="home" ref={heroRef} className="relative flex min-h-screen items-center justify-center overflow-hidden">
+    <section id="home" className="hero">
       {/* Background HLS video */}
-      <div className="absolute inset-0 overflow-hidden">
-        <video
-          ref={videoRef}
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="absolute left-1/2 top-1/2 min-h-full min-w-full -translate-x-1/2 -translate-y-1/2 object-cover"
-        />
-        <div className="absolute inset-0 bg-black/20" />
-        <div className="absolute bottom-0 left-0 h-48 w-full bg-gradient-to-t from-bg to-transparent" />
-      </div>
-
-      {/* Centered content */}
-      <div className="relative z-10 flex flex-col items-center px-6 text-center">
-        {/* Available status indicator */}
-        <div className="blur-in mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-surface/60 px-4 py-2 backdrop-blur-md">
-          <span className="dev-status-dot" />
-          <span className="dev-mono text-muted">Available for AI Projects</span>
+      <div className="hero-media" aria-hidden="true"><video ref={videoRef} muted loop playsInline poster="https://image.mux.com/Aa02T7oM1wH5Mk5EEVDYhbZ1ChcdhRsS2m1NYyx4Ua1g/thumbnail.jpg?time=1&width=1600" /><div className="hero-shade" /></div>
+      <div className="shell hero-layout">
+        <div className="hero-copy">
+          <motion.div className="availability" initial={{ opacity: 0 }} animate={{ opacity: ready ? 1 : 0 }} transition={reveal}><span className="status-dot" />Available for AI projects</motion.div>
+          <h1 className="hero-heading text-balance"><span className="clip-line"><motion.span initial={{ y: '110%' }} animate={{ y: ready ? 0 : '110%' }} transition={reveal}>An AI creator.</motion.span></span><span className="clip-line"><motion.span initial={{ y: '110%' }} animate={{ y: ready ? 0 : '110%' }} transition={{ ...reveal, delay: reduced ? 0 : 0.12 }}>Building the</motion.span></span><span className="clip-line"><motion.span initial={{ y: '110%' }} animate={{ y: ready ? 0 : '110%' }} transition={{ ...reveal, delay: reduced ? 0 : 0.24 }}>future.</motion.span></span></h1>
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={ready ? { opacity: 1, y: 0 } : { opacity: 0 }} transition={{ ...reveal, delay: reduced ? 0 : 0.35 }}>
+            <p className="hero-description">Exploring models, agents, and automation.<br />Turning curiosity into what comes next.</p>
+            <div className="hero-actions"><a href="#work" className="pill-button light-button">See works<span className="arrow-badge" aria-hidden="true">↗</span></a><a href="#contact" className="hero-contact">Reach out <span aria-hidden="true">↗</span></a></div>
+          </motion.div>
         </div>
-
-        <h1 className="name-reveal mb-8 text-7xl font-bold leading-[0.95] tracking-tight text-text-primary md:text-8xl lg:text-[9rem] font-display">
-          Alan
-        </h1>
-
-        <p className="blur-in text-lg text-text-primary/90 md:text-xl">
-          An AI{' '}
-          <span
-            key={roleIndex}
-            className="inline-block animate-role-fade-in text-text-primary font-semibold"
-          >
-            {ROLES[roleIndex]}
-          </span>{' '}
-          building the future.
-        </p>
-
-        <p className="blur-in mt-5 max-w-lg text-sm leading-relaxed text-muted md:text-base">
-          Exploring models, agents, and automation. Researching the frontier, simplifying the complex,
-          and shipping AI-first products in public.
-        </p>
-
-        <div className="blur-in mt-10 flex flex-col items-center gap-4 sm:flex-row">
-          <button onClick={scrollToWork} className="btn btn-lg btn-primary">
-            See Works
-          </button>
-          <button
-            onClick={scrollToContact}
-            className="btn btn-lg btn-secondary gradient-ring"
-          >
-            Reach out
-            <span aria-hidden>↗</span>
-          </button>
-        </div>
+        <motion.aside className="role-card" initial={{ opacity: 0, y: 24 }} animate={ready ? { opacity: 1, y: 0 } : { opacity: 0 }} transition={{ ...reveal, delay: reduced ? 0 : 0.5 }} aria-label="My roles">
+          <div className="role-top"><span className="eyebrow">One curiosity. Many hats.</span><span className="role-symbol" aria-hidden="true">↗</span></div>
+          <div className="role-body"><img src="/alan-logo.png" width="64" height="64" alt="Alan" /><span>AI & Web3</span><div className="role-title" aria-live="polite"><AnimatePresence mode="wait"><motion.h2 key={roleIndex} initial={{ opacity: 0, y: reduced ? 0 : 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: reduced ? 0 : -12 }} transition={{ duration: reduced ? 0 : 0.2 }}>{ROLES[roleIndex]}.</motion.h2></AnimatePresence></div></div>
+          <div className="role-bottom"><span className="role-count">{String(roleIndex + 1).padStart(2, '0')}<span> / 04</span></span><div className="role-controls"><button className="round-button" aria-label="Previous role" onClick={() => setRoleIndex(i => (i + ROLES.length - 1) % ROLES.length)}>←</button><button className="round-button" aria-label="Next role" onClick={() => setRoleIndex(i => (i + 1) % ROLES.length)}>→</button></div></div>
+        </motion.aside>
       </div>
-
-      {/* Scroll indicator */}
-      <div className="absolute bottom-10 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-3">
-        <span className="text-xs uppercase tracking-[0.2em] text-muted">Scroll</span>
-        <div className="relative h-10 w-px overflow-hidden bg-stroke">
-          <div className="animate-scroll-down absolute inset-x-0 h-4 accent-gradient" />
-        </div>
-      </div>
+      <motion.div className="hero-watermark" aria-hidden="true" initial={{ opacity: 0 }} animate={{ opacity: ready ? 1 : 0 }} transition={{ ...reveal, delay: reduced ? 0 : 0.4 }}>ALAN</motion.div>
+      <div className="shell hero-bottom"><span>AI Creator & Social Media Marketer</span><div className="hero-bottom-controls">{!reduced && <button onClick={() => setPlaying(p => !p)} aria-label={playing ? 'Pause background video' : 'Play background video'}>{playing ? 'Pause video' : 'Play video'}<span aria-hidden="true">{playing ? 'Ⅱ' : '▷'}</span></button>}<a href="#about">Scroll to explore <span aria-hidden="true">↓</span></a></div></div>
     </section>
   );
 }
