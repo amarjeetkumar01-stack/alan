@@ -1,91 +1,32 @@
-import { useEffect, useRef, useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-
-const WORDS = ['Build', 'Explore', 'Create', 'Ship'];
+import { useEffect, useState } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 
 export default function LoadingScreen({ onComplete }: { onComplete: () => void }) {
   const [count, setCount] = useState(0);
-  const [wordIndex, setWordIndex] = useState(0);
-  const rafRef = useRef<number>(0);
+  const reducedMotion = useReducedMotion();
 
-  // Counter 000 → 100 over ~2700ms
   useEffect(() => {
+    if (reducedMotion) { onComplete(); return; }
     const start = performance.now();
-    const duration = 2700;
-
+    let frame: number;
     const tick = (now: number) => {
-      const progress = Math.min((now - start) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
+      const t = Math.min((now - start) / 1300, 1);
+      const eased = t < 0.5 ? 4 * t ** 3 : 1 - (-2 * t + 2) ** 3 / 2;
       setCount(Math.round(eased * 100));
-      if (progress < 1) {
-        rafRef.current = requestAnimationFrame(tick);
-      } else {
-        setTimeout(onComplete, 400);
-      }
+      if (t < 1) frame = requestAnimationFrame(tick);
+      else onComplete();
     };
-    rafRef.current = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(rafRef.current);
-  }, [onComplete]);
-
-  // Rotate words every 900ms
-  useEffect(() => {
-    const id = setInterval(() => {
-      setWordIndex((i) => (i + 1) % WORDS.length);
-    }, 900);
-    return () => clearInterval(id);
-  }, []);
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [onComplete, reducedMotion]);
 
   return (
-    <motion.div
-      className="fixed inset-0 z-[9999] flex flex-col bg-bg"
-      exit={{ opacity: 0, transition: { duration: 0.6, ease: 'easeInOut' } }}
-    >
-      {/* Top-left label */}
-      <motion.div
-        initial={{ y: -20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
-        className="dev-mono absolute left-6 top-6 uppercase tracking-[0.3em] text-muted md:left-10 md:top-10"
-      >
-        <span className="dev-syn-key">{'>'}</span> portfolio
-      </motion.div>
-
-      {/* Center rotating words */}
-      <div className="flex flex-1 items-center justify-center overflow-hidden">
-        <AnimatePresence mode="wait">
-          <motion.span
-            key={wordIndex}
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: -20, opacity: 0 }}
-            transition={{ duration: 0.4, ease: 'easeOut' }}
-            className="text-4xl font-semibold tracking-tight text-text-primary/80 md:text-6xl lg:text-7xl font-display"
-          >
-            {WORDS[wordIndex]}
-          </motion.span>
-        </AnimatePresence>
-      </div>
-
-      {/* Bottom-right counter */}
-      <motion.div
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, delay: 0.3 }}
-        className="absolute bottom-10 right-6 text-6xl font-bold tabular-nums tracking-tight text-text-primary md:bottom-16 md:right-10 md:text-8xl lg:text-9xl font-display"
-      >
-        {String(count).padStart(3, '0')}
-      </motion.div>
-
-      {/* Bottom progress bar */}
-      <div className="absolute bottom-0 left-0 h-[3px] w-full bg-stroke/50">
-        <div
-          className="accent-gradient h-full origin-left"
-          style={{
-            transform: `scaleX(${count / 100})`,
-            boxShadow: '0 0 8px rgba(137, 170, 204, 0.35)',
-            transition: 'transform 0.05s linear',
-          }}
-        />
+    <motion.div className="intro font-sans" exit={{ y: '-100%' }} transition={{ duration: reducedMotion ? 0 : 0.75, ease: [0.22, 1, 0.36, 1] }} aria-label="Opening Alan's portfolio">
+      <div className="intro-brand"><img src="/alan-logo.png" alt="" width="48" height="48" /><span>Alan.</span></div>
+      <p>Creator. Explorer. Builder. Marketer.</p>
+      <div className="intro-progress">
+        <div className="intro-track"><div style={{ transform: `scaleX(${count / 100})` }} /></div>
+        <div className="intro-label"><span>Opening portfolio</span><span className="tabular-nums">{String(count).padStart(3, '0')}</span></div>
       </div>
     </motion.div>
   );
