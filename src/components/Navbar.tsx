@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 
-const LINKS = ['Home', 'About', 'Work', 'Tools', 'Services', 'Contact'];
+const LINKS = ['Home', 'About', 'Work', 'Build', 'Services', 'Contact'];
 
-export default function Navbar({ ready, onMenuChange, theme, onThemeToggle, motionPaused, onMotionToggle }: { ready: boolean; onMenuChange: (open: boolean) => void; theme: 'light' | 'dark'; onThemeToggle: () => void; motionPaused: boolean; onMotionToggle: () => void }) {
+export default function Navbar({ ready, onMenuChange, motionPaused, onMotionToggle }: { ready: boolean; onMenuChange: (open: boolean) => void; motionPaused: boolean; onMotionToggle: () => void }) {
   const [time, setTime] = useState(new Date());
   const [active, setActive] = useState('Home');
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -34,12 +34,11 @@ export default function Navbar({ ready, onMenuChange, theme, onThemeToggle, moti
     <>
       <motion.header className="site-header" initial={{ opacity: 0, y: -12 }} animate={ready ? { opacity: 1, y: 0 } : { opacity: 0 }} transition={{ duration: reduced ? 0 : 0.7, delay: reduced ? 0 : 0.1 }}>
         <div className="shell header-inner">
-          <a href="#home" className="brand" aria-label="Alan, home"><img src="/alan-profile.png" alt="" width="36" height="36" /><span>Alan.</span></a>
+          <a href="#home" className="brand" aria-label="Alan, home"><img src="/alan-profile.png" alt="" width="34" height="34" /><span>Alan.</span></a>
           <nav className="desktop-nav" aria-label="Main navigation">
             {LINKS.slice(1).map(link => <a key={link} href={`#${link.toLowerCase()}`} aria-current={active.toLowerCase() === link.toLowerCase() ? 'location' : undefined}>{link}</a>)}
           </nav>
           <div className="header-controls">
-            <button className="menu-trigger theme-toggle" onClick={onThemeToggle} aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}><span className="theme-symbol" aria-hidden="true" /><span>{theme === 'dark' ? 'Light' : 'Dark'}</span></button>
             {!reduced && <button className="menu-trigger motion-toggle" onClick={onMotionToggle} aria-label={motionPaused ? 'Resume card animations' : 'Pause card animations'} aria-pressed={motionPaused}><span className={motionPaused ? 'play-symbol' : 'pause-symbol'} aria-hidden="true" /><span className="sr-only">Card animations</span></button>}
             <div className="clock"><span>Local time</span><time dateTime={time.toISOString()}>{time.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }).toLowerCase()}</time></div>
             <button className="menu-trigger" ref={triggerRef} aria-haspopup="dialog" aria-controls="site-menu" onClick={() => { dialogRef.current?.showModal(); onMenuChange(true); }}><span className="menu-lines" aria-hidden="true"><i /><i /></span>Menu</button>
