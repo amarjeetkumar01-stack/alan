@@ -4,9 +4,9 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: 'var(--background)', foreground: 'var(--ink)', ink: 'var(--ink)', surface: 'var(--surface)', muted: 'var(--muted)', accent: 'var(--accent)',
+        background: '#F5F0E6', foreground: '#0B1F3A', ink: '#0B1F3A', surface: '#FBF7EF', muted: '#6F6B63', accent: '#B8C8DB',
       },
-      fontFamily: { sans: ['Onest', 'sans-serif'] },
+      fontFamily: { sans: ['Manrope', 'Arial', 'sans-serif'] },
     },
   },
   plugins: [],
