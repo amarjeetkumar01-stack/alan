@@ -1,8 +1,3 @@
-import { useState } from 'react';
-import { useReducedMotion } from 'framer-motion';
-import { useHls } from '../hooks/useHls';
-import { HLS_SRC } from '../data';
-
 const SOCIALS = [
   { name: 'X · @alannnfx', url: 'https://x.com/alannnfx' },
   { name: 'Telegram channel', url: 'https://t.me/alanncommunity' },
@@ -10,20 +5,22 @@ const SOCIALS = [
 ];
 
 export default function Contact() {
-  const reduced = useReducedMotion();
-  const [playing, setPlaying] = useState(!reduced);
-  const videoRef = useHls(HLS_SRC, playing && !reduced);
   return (
     <footer id="contact" className="contact-footer">
-      {/* Background video — flipped vertically, heavier overlay */}
-      <div className="footer-media" aria-hidden="true"><video ref={videoRef} muted loop playsInline /><div /></div>
-      <div className="shell footer-content">
-        <div className="section-label"><span className="status-dot" />Available for projects</div>
-        <div className="footer-cta"><h2 className="text-balance">Start a<br />conversation<span>.</span></h2><a href="https://t.me/Alan_Earn" target="_blank" rel="noopener noreferrer" className="footer-cta-arrow" aria-label="Message Alan on Telegram (opens in a new tab)">↗</a></div>
-        <div className="footer-details"><div className="footer-intro"><p>Building with AI day by day, marketing it by night. Available for paid promotions, brand deals and sponsored content. DM to discuss rates.</p><div className="footer-actions"><a href="https://t.me/Alan_Earn" target="_blank" rel="noopener noreferrer" className="pill-button accent-button">Telegram @Alan_Earn<span className="arrow-badge" aria-hidden="true">↗</span></a><a href="https://x.com/alannnfx" target="_blank" rel="noopener noreferrer" className="text-link">Paid Promotion <span aria-hidden="true">↗</span></a></div></div><nav className="footer-links" aria-label="Footer navigation"><span className="eyebrow">Explore</span>{['About', 'Work', 'Tools', 'Services'].map(link => <a key={link} href={`#${link.toLowerCase()}`}>{link}</a>)}</nav><div className="footer-links"><span className="eyebrow">Connect</span>{SOCIALS.map(s => <a key={s.name} href={s.url} target="_blank" rel="noopener noreferrer">{s.name} <span aria-hidden="true">↗</span></a>)}</div></div>
-        <div className="footer-wordmark" aria-hidden="true">ALAN</div>
-        <div className="footer-bottom"><span>© {new Date().getFullYear()} Alan</span><span>AI Creator & Social Media Marketer</span><div className="footer-bottom-actions">{!reduced && <button onClick={() => setPlaying(p => !p)}>{playing ? 'Pause footer video' : 'Play footer video'}</button>}<a href="#home">Back to top ↑</a></div></div>
+      <div className="footer-navy">
+        <div className="shell footer-content">
+          <div className="section-label"><span className="label-rule" />Available for projects</div>
+          <div className="footer-cta"><h2 className="text-balance">Start a<br /><em>conversation.</em></h2><a href="https://t.me/Alan_Earn" target="_blank" rel="noopener noreferrer" className="footer-cta-arrow" aria-label="Message Alan on Telegram (opens in a new tab)">↗</a></div>
+          <div className="footer-details">
+            <div className="footer-intro"><a href="#home" className="brand"><span className="brand-star" aria-hidden="true">✧</span>alan<span className="brand-dot">.</span></a><p>Building with AI day by day, marketing it by night. Available for paid promotions, brand deals, and sponsored content.</p><a href="https://t.me/Alan_Earn" target="_blank" rel="noopener noreferrer" className="footer-email">Message on Telegram <span aria-hidden="true">↗</span></a></div>
+            <nav className="footer-links" aria-label="Footer navigation"><span className="eyebrow">Explore</span>{['About', 'Work', 'Builds', 'Services'].map(link => <a key={link} href={`#${link.toLowerCase()}`}>{link}</a>)}</nav>
+            <div className="footer-links"><span className="eyebrow">Connect</span>{SOCIALS.map(s => <a key={s.name} href={s.url} target="_blank" rel="noopener noreferrer">{s.name} <span aria-hidden="true">↗</span></a>)}</div>
+            <div className="footer-links footer-note"><span className="eyebrow">Good to know</span><p>Have a launch, product, or idea worth sharing?</p><a href="https://x.com/alannnfx" target="_blank" rel="noopener noreferrer">Paid promotion <span aria-hidden="true">↗</span></a></div>
+          </div>
+          <div className="footer-bottom"><span>© {new Date().getFullYear()} Alan</span><span>AI Creator & Social Media Marketer</span><a href="#home">Back to top ↑</a></div>
+        </div>
       </div>
+      <div className="footer-landscape"><img src="/landscape.svg" alt="" width="1600" height="360" loading="lazy" /></div>
     </footer>
   );
 }
