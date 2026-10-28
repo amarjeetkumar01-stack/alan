@@ -11,9 +11,9 @@ const SERVICES = [
 export default function Services() {
   const reduced = useReducedMotion();
   return (
-    <section id="services" className="shell section services-section">
+    <section id="services" className="band-cream"><div className="shell section services-section">
       <SectionHeader eyebrow="Services" title="What I" highlight="offer." subtext="Partnering with AI, crypto, and tech brands to build, launch, and grow." action={<a href="#contact" className="text-link">Find your next move <span aria-hidden="true">↗</span></a>} />
       <div className="service-list">{SERVICES.map(service => <motion.a key={service.num} href="#contact" className="service-row" initial={{ opacity: reduced ? 1 : 0, y: reduced ? 0 : 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: reduced ? 0 : 0.6 }}><span className="service-number">{service.num}</span><h3>{service.title}</h3><p>{service.desc}</p><span className="service-arrow" aria-hidden="true">↗</span></motion.a>)}</div>
-    </section>
+    </div></section>
   );
 }

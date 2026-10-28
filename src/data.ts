@@ -2,143 +2,114 @@ export const HLS_SRC = 'https://stream.mux.com/Aa02T7oM1wH5Mk5EEVDYhbZ1ChcdhRsS2
 
 export type WorkItem = {
   name: string;
-  url: string;
+  productUrl: string;
+  postUrl: string;
   logo: string;
-  additionalPosts?: string[];
-};
-
-// AI projects
-export const AI_WORK: WorkItem[] = [
-  { name: 'Tavus', url: 'https://x.com/alannnfx/status/2098098690749776186?s=20', logo: '/logos/tavus.png' },
-  {
-    name: 'Sapient Intelligence',
-    url: 'https://x.com/alannnfx/status/2096397114435838090?s=20',
-    logo: '/logos/sapient-intelligence.png',
-    additionalPosts: [
-      'https://x.com/alannnfx/status/2094968399889870905?s=20',
-      'https://x.com/alannnfx/status/2093870768677703770?s=20',
-    ],
-  },
-  { name: 'Fanvue', url: 'https://x.com/alannnfx/status/2065678107764502539', logo: '/logos/fanvue.png' },
-  { name: 'Z.ai', url: 'https://x.com/alannnfx/status/2074374165331882391', logo: '/logos/zai.svg' },
-  { name: 'Atomic Chat', url: 'https://x.com/alannnfx/status/2071258839589265432', logo: '/logos/atomicchat.png' },
-  { name: 'TSL', url: 'https://x.com/alannnfx/status/2061482181176987686', logo: '/logos/tsl.png' },
-  { name: 'NATIX Network', url: 'https://x.com/alannnfx/status/2079794202540683652', logo: '/logos/natix.png' },
-];
-
-// Crypto projects
-export const CRYPTO_WORK: WorkItem[] = [
-  { name: 'Lastpack', url: 'https://x.com/alannnfx/status/2075063803759485428', logo: '/logos/lastpack.png' },
-  { name: 'Rally', url: 'https://x.com/alannnfx/status/2027091422391021616', logo: '/logos/rally.png' },
-  { name: 'Argue', url: 'https://x.com/alannnfx/status/2022563415504621611', logo: '/logos/argue.png' },
-  { name: 'Syndicate', url: 'https://x.com/alannnfx/status/2056245610672746767', logo: '/logos/syndicate.png' },
-  { name: 'Kosmosdotfyi', url: 'https://x.com/alannnfx/status/2078354459881861200', logo: '/logos/kosmos.png' },
-];
-
-export type XPost = {
-  id: string;
-  url: string;
-  label: string;
-};
-
-export const X_POSTS: XPost[] = [
-  { id: '2061325835047743568', url: 'https://x.com/alannnfx/status/2061325835047743568', label: 'AI Research' },
-  { id: '2070180935350579337', url: 'https://x.com/alannnfx/status/2070180935350579337', label: 'AI Agents' },
-  { id: '2065011204465324197', url: 'https://x.com/alannnfx/status/2065011204465324197', label: 'Automation' },
-  { id: '2062779167217955229', url: 'https://x.com/alannnfx/status/2062779167217955229', label: 'Future Tech' },
-];
-
-export type Project = {
-  title: string;
-  subtitle: string;
   category: string;
-  image: string;
-  span: string;
+  blurb: string;
 };
 
-export const PROJECTS: Project[] = [
+// Brand collaborations — each pairs the product site with Alan's matching X post.
+export const WORKED_ON: WorkItem[] = [
   {
-    title: 'Automotive Motion',
-    subtitle: 'AI-generated cinematic motion study',
-    category: 'Research',
-    image:
-      'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1400&q=80',
-    span: 'md:col-span-7',
+    name: 'Recursive',
+    productUrl: 'https://recursive.com/',
+    postUrl: 'https://x.com/alannnfx/status/2112951299256058135',
+    logo: '/logos/recursive.png',
+    category: 'AI Research',
+    blurb: 'Self-improving superintelligence lab — launch campaign for Flint, its open-weights 40B coding model.',
   },
   {
-    title: 'Urban Architecture',
-    subtitle: 'Generative design systems for cities',
-    category: 'Workflows',
-    image:
-      'https://images.unsplash.com/photo-1486325212027-8081e485255e?auto=format&fit=crop&w=1200&q=80',
-    span: 'md:col-span-5',
+    name: 'General Compute',
+    productUrl: 'https://www.generalcompute.com/',
+    postUrl: 'https://x.com/alannnfx/status/2112600882923843666',
+    logo: '/logos/generalcompute.png',
+    category: 'AI Infrastructure',
+    blurb: 'The inference cloud for alternative chips — coverage of its memory-first hardware roadmap.',
   },
   {
-    title: 'Human Perspective',
-    subtitle: 'Multimodal agents that understand people',
-    category: 'AI Agents',
-    image:
-      'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=1200&q=80',
-    span: 'md:col-span-5',
+    name: 'VYB · Coco Labs',
+    productUrl: 'https://cocolabs.ai/vyb',
+    postUrl: 'https://x.com/alannnfx/status/2112589160079048790',
+    logo: '/logos/vyb.png',
+    category: 'AI Design',
+    blurb: 'The first AI design model — turns real brand assets into editable layered designs. Beta launch promo.',
   },
   {
-    title: 'Brand Identity',
-    subtitle: 'AI-first identity systems at scale',
-    category: 'Automation',
-    image:
-      'https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&w=1400&q=80',
-    span: 'md:col-span-7',
+    name: 'Tuesday Labs Reserve',
+    productUrl: 'https://tuesdaylabs.com/reserve',
+    postUrl: 'https://x.com/alannnfx/status/2112570772141359576',
+    logo: '/logos/tuesdaylabs.png',
+    category: 'Robotics',
+    blurb: 'Reservation launch for Voxel Series-1, the home robot from the NYC robotics lab and design studio.',
+  },
+  {
+    name: 'Skyfall',
+    productUrl: 'https://skyfall.ai/',
+    postUrl: 'https://x.com/alannnfx/status/2112247702872641680',
+    logo: '/logos/skyfall.svg',
+    category: 'World Models',
+    blurb: 'Engineering world models for the autonomous enterprise — launch of SKY-001 for CAD & BIM design.',
+  },
+  {
+    name: 'Elorian',
+    productUrl: 'https://elorian.ai/',
+    postUrl: 'https://x.com/alannnfx/status/2111147100969042319',
+    logo: '/logos/elorian.svg',
+    category: 'Visual Reasoning',
+    blurb: 'Frontier intelligence lab — launch promo for Glimpse, a model that reasons through images and video.',
+  },
+  {
+    name: 'VN.AI',
+    productUrl: 'https://www.vn.ai/',
+    postUrl: 'https://x.com/alannnfx/status/2111093765066932678',
+    logo: '/logos/vnai.png',
+    category: 'AI Video',
+    blurb: 'AI studio for video and images with authorship tracking — vn studio launch campaign.',
+  },
+  {
+    name: 'Envato',
+    productUrl: 'https://linktr.ee/Envato',
+    postUrl: 'https://x.com/alannnfx/status/2110938942635925668',
+    logo: '/logos/envato.png',
+    category: 'Creative Tools',
+    blurb: 'Creative-asset marketplace — campaign for AI photo editing that restyles real photos.',
+  },
+  {
+    name: 'Bland',
+    productUrl: 'https://www.bland.ai/',
+    postUrl: 'https://x.com/alannnfx/status/2110788673524650289',
+    logo: '/logos/bland.png',
+    category: 'Voice AI',
+    blurb: 'Enterprise voice AI platform — promo for turning business websites into conversational agents.',
+  },
+  {
+    name: 'Self',
+    productUrl: 'https://self.xyz/',
+    postUrl: 'https://x.com/alannnfx/status/2110778898149695699',
+    logo: '/logos/self.png',
+    category: 'Identity & Agents',
+    blurb: 'Identity infrastructure for humans and AI agents — Agent Vault launch coverage.',
   },
 ];
 
-export type JournalEntry = {
+export type BuildItem = {
   title: string;
-  url: string;
-  image: string;
-  read: string;
-  date: string;
+  blurb: string;
+  tag: string;
+  url?: string;
 };
 
-export const JOURNAL: JournalEntry[] = [
+// Placeholder slots — swap in real builds as they ship. Leave `url` off to hide the link.
+export const BUILDS: BuildItem[] = [
   {
-    title: 'Claude Fable 5 vs GLM 5.2',
-    url: 'https://x.com/alannnfx/status/2072569518422200663',
-    image:
-      'https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=200&q=80',
-    read: 'Read',
-    date: 'Jul 2026',
+    title: 'Project title',
+    blurb: 'A one-line description of the build — what it does, who it is for, and why it matters.',
+    tag: 'Coming soon',
   },
   {
-    title: 'How to use 3b model for Free',
-    url: 'https://x.com/alannnfx/status/2071258839589265432',
-    image:
-      'https://images.unsplash.com/photo-1620712943543-bcc4688e7480?auto=format&fit=crop&w=200&q=80',
-    read: 'Read',
-    date: 'Jul 2026',
+    title: 'Project title',
+    blurb: 'A one-line description of the build — what it does, who it is for, and why it matters.',
+    tag: 'Coming soon',
   },
-  {
-    title: 'My Obsidian and Hermes Combo',
-    url: 'https://x.com/alannnfx/status/2070180935350579337',
-    image:
-      'https://images.unsplash.com/photo-1655720828018-edd2daec9349?auto=format&fit=crop&w=200&q=80',
-    read: 'Read',
-    date: 'Jul 2026',
-  },
-  {
-    title: 'Comparison between PT-5.5 vs GLM 5.2 vs Opus 4.8 vs Fugu',
-    url: 'https://x.com/alannnfx/status/2070110059858915791',
-    image:
-      'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=200&q=80',
-    read: 'Read',
-    date: 'Jul 2026',
-  },
-];
-
-export const EXPLORATIONS = [
-  { image: 'https://images.unsplash.com/photo-1635776062127-d379bfcba9f8?auto=format&fit=crop&w=600&q=80', title: 'Neural Bloom' },
-  { image: 'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?auto=format&fit=crop&w=600&q=80', title: 'Latent Space' },
-  { image: 'https://images.unsplash.com/photo-1633186710895-309db2eca9e4?auto=format&fit=crop&w=600&q=80', title: 'Gradient Field' },
-  { image: 'https://images.unsplash.com/photo-1614850523060-8da1d56ae167?auto=format&fit=crop&w=600&q=80', title: 'Synthesis' },
-  { image: 'https://images.unsplash.com/photo-1633265486064-086b219458ec?auto=format&fit=crop&w=600&q=80', title: 'Diffusion' },
-  { image: 'https://images.unsplash.com/photo-1655720828018-edd2daec9349?auto=format&fit=crop&w=600&q=80', title: 'Inference' },
 ];
