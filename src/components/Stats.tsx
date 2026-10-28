@@ -15,6 +15,6 @@ function Counter({ value, suffix }: { value: number; suffix: string }) {
 
 export default function Stats() {
   return (
-    <section className="shell stats-section" aria-label="At a glance"><div className="stats-panel"><div className="section-label"><span className="status-dot" />Always exploring. Always building.</div><div className="stats-grid"><div className="stat"><Counter value={50} suffix="+" /><p>Models explored</p></div><div className="stat"><div className="stat-value stat-text">AI & Web3</div><p>Content Creator</p></div><div className="stat"><Counter value={100} suffix="%" /><p>Built in public</p></div></div></div></section>
+    <section className="band-cream"><div className="shell stats-section" aria-label="At a glance"><div className="stats-panel band-navy band-navy-texture"><div className="section-label">Always exploring. Always building.</div><div className="stats-grid"><div className="stat"><Counter value={50} suffix="+" /><p>Models explored</p></div><div className="stat"><div className="stat-value stat-text">AI & Web3</div><p>Content Creator</p></div><div className="stat"><Counter value={100} suffix="%" /><p>Built in public</p></div></div></div></div></section>
   );
 }
